@@ -1,0 +1,84 @@
+name: Check Version and Compile Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  check-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract Version from style.css
+        id: get_version
+        run: |
+          VERSION=$(grep -i "Version:" style.css | sed -E 's/.*Version:[[:space:]]*([0-9.]+).*/\1/' | tr -d '\r')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "TAG_NAME=v$VERSION" >> $GITHUB_ENV
+          echo "Detected Version: $VERSION"
+
+      - name: Check if Tag Exists
+        id: check_tag
+        run: |
+          git fetch --tags
+          if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
+            echo "TAG_EXISTS=true" >> $GITHUB_ENV
+            echo "Version v${{ env.VERSION }} already exists. Skipping release."
+          else
+            echo "TAG_EXISTS=false" >> $GITHUB_ENV
+            echo "New version detected: v${{ env.VERSION }}. Proceeding with release."
+          fi
+
+      - name: Set up Node.js
+        if: env.TAG_EXISTS == 'false'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: env.TAG_EXISTS == 'false'
+        run: npm ci
+
+      - name: Build Tailwind CSS
+        if: env.TAG_EXISTS == 'false'
+        run: npm run build
+
+      - name: Create Release Package
+        if: env.TAG_EXISTS == 'false'
+        run: |
+          # Create temporary folder for clean zipping
+          mkdir -p gnn-agency/assets/css
+          cp -r assets/* gnn-agency/assets/
+          cp -r inc gnn-agency/
+          cp *.php gnn-agency/
+          cp style.css gnn-agency/
+          
+          # Zip the theme folder
+          zip -r gnn-agency.zip gnn-agency/
+
+      - name: Create and Push Git Tag
+        if: env.TAG_EXISTS == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag v${{ env.VERSION }}
+          git push origin v${{ env.VERSION }}
+
+      - name: Create Release and Upload Asset
+        if: env.TAG_EXISTS == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: Release v${{ env.VERSION }}
+          files: gnn-agency.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

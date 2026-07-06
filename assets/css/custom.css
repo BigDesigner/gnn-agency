@@ -1,0 +1,111 @@
+/* Reset & Responsive General Overrides */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Ensure all images inside WordPress act responsively */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* WordPress Core Alignment Classes Support */
+.aligncenter {
+  display: block;
+  margin: 0 auto;
+}
+.alignleft {
+  float: left;
+  margin: 0 1.5em 1.5em 0;
+}
+.alignright {
+  float: right;
+  margin: 0 0 1.5em 1.5em;
+}
+.wp-caption {
+  max-width: 100%;
+  border: 1px solid #1e293b;
+  padding: 4px;
+  text-align: center;
+}
+.wp-caption img {
+  margin: 0;
+  max-width: 100%;
+  height: auto;
+}
+.wp-caption-text {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin: 4px 0 0;
+}
+
+/* Extracted from Blog Listing Template */
+.glass-nav {
+  transition: all 0.3s ease;
+}
+.glass-nav.scrolled {
+  background-color: rgba(249, 249, 249, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(196, 199, 199, 0.2);
+}
+/* Custom styles for deep space header */
+.hero-space-bg {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a24 100%);
+  position: relative;
+  overflow: hidden;
+}
+.hero-space-bg::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.5;
+}
+
+/* Extracted from Single Post Template */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.icon-fill {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+body {
+  background-color: theme('colors.background');
+  color: theme('colors.on-background');
+}
+
+/* Extracted from Standard Page Template */
+body {
+  font-family: 'Inter', sans-serif;
+}
+.glass-header {
+  backdrop-filter: blur(20px);
+  background-color: rgba(249, 249, 249, 0.8);
+  border-bottom: 1px solid #e2e2e2;
+}
+
+/* Extracted from Full-Width Page Template */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: theme('colors.background');
+  color: theme('colors.on-background');
+}
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.material-symbols-outlined.filled {
+  font-variation-settings: 'FILL' 1;
+}
+
+/* Sticky Header Glassmorphism */
+.scrolled-header {
+  backdrop-filter: blur(20px);
+  background-color: rgba(249, 249, 249, 0.8);
+  border-bottom: 1px solid theme('colors.outline-variant');
+}

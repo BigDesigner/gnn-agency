@@ -1,0 +1,15 @@
+{
+  "name": "gnn-agency",
+  "version": "1.0.0",
+  "description": "WordPress theme built with Tailwind CSS",
+  "main": "index.php",
+  "scripts": {
+    "build": "tailwindcss -i ./assets/css/tailwind-input.css -o ./assets/css/tailwind.css --minify",
+    "watch": "tailwindcss -i ./assets/css/tailwind-input.css -o ./assets/css/tailwind.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/container-queries": "^0.1.1",
+    "@tailwindcss/forms": "^0.5.9",
+    "tailwindcss": "^3.4.1"
+  }
+}

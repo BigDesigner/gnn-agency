@@ -19,6 +19,8 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 node_modules/
+assets/css/tailwind.css
+
 
 
 # Agent and Project Memory Bank directories
